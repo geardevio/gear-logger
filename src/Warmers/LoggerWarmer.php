@@ -7,7 +7,7 @@ use GearDev\Core\ContextStorage\ContextStorage;
 use GearDev\Core\Warmers\WarmerInterface;
 use GearDev\Coroutines\Co\ChannelFactory;
 use GearDev\Logger\Logger\CustomLogger;
-use GearDev\Masko\Processes\ValuesMaskJsonFormatter;
+use GearDev\Masko\Formatter\ValuesMaskJsonFormatter;
 use Illuminate\Foundation\Application;
 
 #[Warmer]
