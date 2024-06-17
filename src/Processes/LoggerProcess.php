@@ -24,7 +24,9 @@ class LoggerProcess extends AbstractProcess
                 'level'=>env('LOG_LEVEL', 'error'),
                 'via' => CustomLogger::class,
             ]]);
-            config(['logging.channels.stderr.formatter'=>env('LOG_STDERR_FORMATTER', ValuesMaskJsonFormatter::class)]);
+            if (class_exists(ValuesMaskJsonFormatter::class)) {
+                config(['logging.channels.stderr.formatter'=>env('LOG_STDERR_FORMATTER', ValuesMaskJsonFormatter::class)]);
+            }
             config(['logging.default'=>'custom']);
         }
         $channel = ChannelFactory::createChannel(1000);
