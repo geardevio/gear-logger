@@ -3,7 +3,9 @@
 namespace GearDev\Logger\Warmers;
 
 use GearDev\Core\Attributes\Warmer;
+use GearDev\Core\ContextStorage\ContextStorage;
 use GearDev\Core\Warmers\WarmerInterface;
+use GearDev\Coroutines\Co\ChannelFactory;
 use GearDev\Logger\Logger\CustomLogger;
 use GearDev\Masko\Processes\ValuesMaskJsonFormatter;
 use Illuminate\Foundation\Application;
@@ -14,6 +16,8 @@ class LoggerWarmer implements WarmerInterface
 
     public function warm(Application $app): void
     {
+        $channel = ChannelFactory::createChannel(1000);
+        ContextStorage::setSystemChannel('log', $channel);
         if (config('logging.default', 'custom')=='custom') {
             config(['logging.channels.custom'=> [
                 'driver' => 'custom',

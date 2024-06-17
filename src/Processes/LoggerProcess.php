@@ -18,8 +18,7 @@ class LoggerProcess extends AbstractProcess
 
     protected function run(): bool
     {
-        $channel = ChannelFactory::createChannel(1000);
-        ContextStorage::setSystemChannel('log', $channel);
+        $channel = ContextStorage::getSystemChannel('log');
         if (config('logging.default', 'custom')=='custom') {
             $driver = 'stderr';
         } else {
