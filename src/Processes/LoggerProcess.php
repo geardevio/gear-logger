@@ -19,10 +19,10 @@ class LoggerProcess extends AbstractProcess
     protected function run(): bool
     {
         $channel = ContextStorage::getSystemChannel('log');
-        if (config('logging.default', 'custom')=='custom') {
+        if (env('LOG_CHANNEL', 'custom')=='custom') {
             $driver = 'stderr';
         } else {
-            $driver = config('logging.default', 'stderr');
+            $driver = env('LOG_CHANNEL', 'stderr');
         }
         CoFactory::createCo('main-logger')
             ->charge(function($channel, $logChannel) {
