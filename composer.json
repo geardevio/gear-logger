@@ -1,0 +1,22 @@
+{
+  "name": "geardev/logger",
+  "description": "Logger. Part of toolkit to boost your development with Laravel and geardev.io",
+  "autoload": {
+    "psr-4": {
+      "GearDev\\Logger\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "GearDev\\Logger\\LoggerServiceProvider"
+      ]
+    }
+  },
+  "require": {
+    "geardev/core": "^0.0",
+    "geardev/coroutines": "^0.0",
+    "geardev/processes": "^0.0",
+    "geardev/swow": "^0.0"
+  }
+}
