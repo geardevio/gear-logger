@@ -6,8 +6,6 @@ use GearDev\Core\Attributes\Warmer;
 use GearDev\Core\ContextStorage\ContextStorage;
 use GearDev\Core\Warmers\WarmerInterface;
 use GearDev\Coroutines\Co\ChannelFactory;
-use GearDev\Logger\Logger\CustomLogger;
-use GearDev\Masko\Formatter\ValuesMaskJsonFormatter;
 use Illuminate\Foundation\Application;
 
 #[Warmer]
@@ -18,15 +16,5 @@ class LoggerWarmer implements WarmerInterface
     {
         $channel = ChannelFactory::createChannel(1000);
         ContextStorage::setSystemChannel('log', $channel);
-        config(['logging.channels.custom'=> [
-            'driver' => 'custom',
-            'level'=>env('LOG_LEVEL', 'error'),
-            'via' => CustomLogger::class,
-        ]]);
-        config(['logging.default'=>'custom']);
-        if (class_exists(ValuesMaskJsonFormatter::class)) {
-            config(['logging.channels.stderr.formatter'=>env('LOG_STDERR_FORMATTER', ValuesMaskJsonFormatter::class)]);
-            config(['logging.channels.'.env('LOG_CHANNEL', 'custom').'.formatter'=>env('LOG_CUSTOM_FORMATTER', ValuesMaskJsonFormatter::class)]);
-        }
     }
 }

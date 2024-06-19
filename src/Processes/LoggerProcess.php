@@ -3,11 +3,8 @@
 namespace GearDev\Logger\Processes;
 
 use GearDev\Core\ContextStorage\ContextStorage;
-use GearDev\Coroutines\Co\ChannelFactory;
 use GearDev\Coroutines\Co\CoFactory;
-use GearDev\Logger\Logger\CustomLogger;
 use GearDev\Logger\Message\LogMessage;
-use GearDev\Masko\Processes\ValuesMaskJsonFormatter;
 use GearDev\Processes\Attributes\Process;
 use GearDev\Processes\ProcessesManagement\AbstractProcess;
 use Illuminate\Support\Facades\Log;
@@ -18,25 +15,21 @@ class LoggerProcess extends AbstractProcess
 
     protected function run(): bool
     {
-        $channel = ContextStorage::getSystemChannel('log');
-        if (env('LOG_CHANNEL', 'custom')=='custom') {
-            $driver = 'stderr';
-        } else {
-            $driver = env('LOG_CHANNEL', 'stderr');
-        }
         CoFactory::createCo('main-logger')
-            ->charge(function($channel, $logChannel) {
+            ->charge(function() {
+                $channel = ContextStorage::getSystemChannel('log');
+                $logFinalChannel = config('gear.logger.logFinalChannel', env('LOG_FINAL_CHANNEL', 'stderr'));
                 /** @var LogMessage $message */
                 while ($message = $channel->pop()) {
                     if ($message->severity===null) $message->severity='alert';
                     Log
-                        ::driver($logChannel)->log(
+                        ::driver($logFinalChannel)->log(
                             $message->severity,
                             $message->message,
                             $message->context
                         );
                 }
-            })->args($channel, $driver)->runWithClonedDiContainer();
+            })->runWithClonedDiContainer();
         return true;
     }
 }

@@ -14,7 +14,7 @@ class CustomLogger
     public function __invoke(array $config): Logger
     {
         $logger = new Logger(
-            env('APP_NAME'),
+            config('app.name'),
             [
                 new CoroutineTolerantHandler($config['level'] ?? Level::Debug),
             ]
